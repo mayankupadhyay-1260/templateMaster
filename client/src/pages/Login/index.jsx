@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { login } from "../../api/authApi";
@@ -6,13 +6,18 @@ import { login } from "../../api/authApi";
 export default function Login() {
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
+    const [slowRequest, setSlowRequest] = useState(false);
     const navigate = useNavigate();
+    const slowTimer = useRef(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             setLoading(true);
+            setSlowRequest(false);
+            // Show "waking up" hint after 4s for Render free tier cold starts
+            slowTimer.current = setTimeout(() => setSlowRequest(true), 4000);
             await login(email);
             localStorage.setItem("email", email);
             navigate("/otp");
@@ -22,7 +27,9 @@ export default function Login() {
                 "Failed to send OTP"
             );
         } finally {
+            clearTimeout(slowTimer.current);
             setLoading(false);
+            setSlowRequest(false);
         }
     };
 
@@ -97,10 +104,24 @@ export default function Login() {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="w-full bg-[#0b1a60] hover:bg-[#000840] text-white p-3.5 rounded-xl font-bold text-sm transition shadow-md active:scale-[0.99] cursor-pointer"
+                                className="w-full bg-[#0b1a60] hover:bg-[#000840] text-white p-3.5 rounded-xl font-bold text-sm transition shadow-md active:scale-[0.99] cursor-pointer disabled:opacity-80"
                             >
-                                {loading ? "Sending..." : "Login"}
+                                {loading ? (
+                                    <span className="flex items-center justify-center gap-2">
+                                        <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+                                        </svg>
+                                        Sending OTP...
+                                    </span>
+                                ) : "Login"}
                             </button>
+
+                            {slowRequest && (
+                                <p className="text-center text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2 mt-1">
+                                    ⏳ Server is waking up, please wait up to 60 seconds...
+                                </p>
+                            )}
                         </form>
                     </div>
 

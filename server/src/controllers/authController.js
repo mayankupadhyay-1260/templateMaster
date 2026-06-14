@@ -34,9 +34,10 @@ export const login = async (req, res) => {
             message: "OTP Sent",
         });
     } catch (error) {
+        console.error("Login/OTP error:", error.message);
         return res.status(500).json({
             success: false,
-            message: error.message,
+            message: "Failed to send OTP. Please try again.",
         });
     }
 };
