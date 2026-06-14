@@ -13,7 +13,8 @@ const app = express();
 
 app.use(cors({
     origin: (origin, callback) => {
-        const allowed = process.env.CLIENT_URL || "http://localhost:5173";
+        // Strip trailing slash from CLIENT_URL if present
+        const allowed = (process.env.CLIENT_URL || "http://localhost:5173").replace(/\/$/, "");
         // Allow production URL, all vercel.app previews, and local dev
         if (
             !origin ||
