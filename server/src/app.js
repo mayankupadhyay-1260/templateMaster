@@ -2,13 +2,19 @@ import express from "express";
 import cors from "cors";
 import productRoutes from "./routes/productRoutes.js";
 import path from "path";
+import { fileURLToPath } from "url";
 import uploadRoutes from "./routes/uploadRoutes.js";
-
 import authRoutes from "./routes/authRoutes.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+}));
 app.use(express.json());
 
 
@@ -28,7 +34,7 @@ app.use(
 
 app.use(
     "/uploads",
-    express.static("uploads")
+    express.static(path.join(__dirname, "../../uploads"))
 );
 
 app.use(
