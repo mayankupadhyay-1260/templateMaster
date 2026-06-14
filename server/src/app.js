@@ -12,7 +12,20 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 app.use(cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: (origin, callback) => {
+        const allowed = process.env.CLIENT_URL || "http://localhost:5173";
+        // Allow production URL, all vercel.app previews, and local dev
+        if (
+            !origin ||
+            origin === allowed ||
+            origin.endsWith(".vercel.app") ||
+            origin === "http://localhost:5173"
+        ) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
 }));
 app.use(express.json());
