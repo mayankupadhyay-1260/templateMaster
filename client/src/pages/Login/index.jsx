@@ -22,6 +22,7 @@ export default function Login() {
             localStorage.setItem("email", email);
             navigate("/otp");
         } catch (error) {
+            console.error("OTP Error:", error.response?.data || error.message);
             alert(
                 error.response?.data?.message ||
                 "Failed to send OTP"
