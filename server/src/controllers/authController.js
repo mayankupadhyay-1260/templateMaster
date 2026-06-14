@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import generateOTP from "../utils/generateOTP.js";
 import jwt from "jsonwebtoken";
+import { sendOTPEmail } from "../utils/sendEmail.js";
 
 export const login = async (req, res) => {
     try {
@@ -26,9 +27,7 @@ export const login = async (req, res) => {
 
         await user.save();
 
-        console.log(
-            `OTP for ${email}: ${otp}`
-        );
+        await sendOTPEmail(email, otp);
 
         return res.status(200).json({
             success: true,
