@@ -1,5 +1,5 @@
 # Productr — Template Manager
-### Full Stack Developer Assignment · Orufy Technologies Pvt. Ltd.
+### Full Stack Developer Assignment
 
 A fully functional product management web application built as per the Figma design provided by Orufy Technologies. The app enables authenticated users to create, read, update, and delete products with image uploads, status toggling, and a clean dashboard UI.
 
