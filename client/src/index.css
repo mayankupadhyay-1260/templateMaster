@@ -1,0 +1,34 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background-color: #fafbfc;
+  color: #111827;
+}
+
+.product-card {
+  width: 430px;
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, .05);
+}
+
+.product-image {
+  height: 230px;
+  background: #f3f4f6;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.publish-btn {
+  background: #243cff;
+  color: white;
+}
+
+.unpublish-btn {
+  background: #4ade00;
+  color: white;
+}
